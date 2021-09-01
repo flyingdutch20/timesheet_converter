@@ -50,11 +50,12 @@ for index, my_line in df.iterrows():
                 my_month_no = my_date.strftime("%m")
                 my_month = my_date.strftime("%b")
                 my_project = f'{my_line[5]} - {my_line[6]}'
-                my_row = [my_line[0],my_line[1],my_date,day,my_week,my_month_no,my_month,my_year,my_line[4],my_line[5],my_line[6],my_project,my_line[7],my_line[8],my_line[9],my_line[10+idx]]
+                my_days = my_line[10+idx] / 7.5
+                my_row = [my_line[0],my_line[1],my_date,day,my_week,my_month_no,my_month,my_year,my_line[4],my_line[5],my_line[6],my_project,my_line[7],my_line[8],my_line[9],my_line[10+idx],my_days]
                 my_lines.append(my_row)
 
 
-df_out = pd.DataFrame(columns=['DOCNBR','NAME','DATE','DAY','WEEK','MONTHNUMBER','MONTH','YEAR','LINENBR','PROJECTID','PROJECTNAME','PROJECT','TASKID','TASKNAME','COMMENT','HOURS'],data=my_lines)
+df_out = pd.DataFrame(columns=['DOCNBR','NAME','DATE','DAY','WEEK','MONTHNUMBER','MONTH','YEAR','LINENBR','PROJECTID','PROJECTNAME','PROJECT','TASKID','TASKNAME','COMMENT','HOURS','DAYS'],data=my_lines)
 
 if not os.path.exists(my_out):
     os.makedirs(my_out)
