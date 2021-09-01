@@ -1,0 +1,7 @@
+To build an exe, open a terminal in the main directory and then
+
+> pyinstaller --onefile convert.py
+
+Create new directory in the previous versions directory; yy.mm.0.0
+Copy exe into new directory and into root
+
