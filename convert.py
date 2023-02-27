@@ -31,7 +31,7 @@ for my_file in files:
     try:
         my_df = pd.read_excel(my_dir + '/' + my_file, usecols=my_cols)
         if df is not None:
-            df = df.append(my_df)
+            pd.concat([df,my_df])
             df = df.drop_duplicates()
         else:
             df = my_df
@@ -41,7 +41,7 @@ for my_file in files:
 
 my_lines = []
 for index, my_line in df.iterrows():
-    if my_line[3]=='Processed':
+    if my_line[3]=='Processed' or my_line[3]=='Approved':
         for idx, day in enumerate(['MON','TUE','WED','THU','FRI','SAT','SUN']):
             if my_line[10+idx] > 0:
                 my_date = my_line[2] + dt.timedelta(days=idx)
