@@ -31,7 +31,7 @@ for my_file in files:
     try:
         my_df = pd.read_excel(my_dir + '/' + my_file, usecols=my_cols)
         if df is not None:
-            pd.concat([df,my_df])
+            df = pd.concat([df, my_df])
             df = df.drop_duplicates()
         else:
             df = my_df
