@@ -61,8 +61,10 @@ if not os.path.exists(my_out):
     os.makedirs(my_out)
 os.chdir(my_out)
 output_name = "output.xlsx"
+df_out.to_excel(output_name, index=False)
 counter = 0
 while os.path.exists(output_name):
     counter += 1
     output_name = f'output{counter}.xlsx'
 df_out.to_excel(output_name, index=False)
+
