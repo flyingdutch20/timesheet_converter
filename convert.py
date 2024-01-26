@@ -20,7 +20,7 @@ config = configparser.ConfigParser()
 config.read("config.ini")
 options = config["OPTIONS"]
 my_dir = options["reqlogic_directory"]
-my_cols = int(options["columns"])
+my_cols = options["columns"]
 my_out = options["output_directory"]
 
 if not os.path.exists(my_dir):
@@ -33,6 +33,7 @@ for my_file in files:
     try:
         my_df = pd.read_excel(my_dir + '/' + my_file, usecols=my_cols)
         if df is not None:
+            print(f"Processing file: {my_file}")
             df = pd.concat([df, my_df])
             df = df.drop_duplicates()
         else:
@@ -41,12 +42,13 @@ for my_file in files:
         pass
 
 my_lines = []
+print(f"Processing {len(df)} lines ...")
 for index, my_line in df.iterrows():
     if my_line[3] == 'Processed' or my_line[3] == 'Approved':
         for idx, day in enumerate(['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']):
             if my_line[10 + idx] > 0:
                 my_date = my_line[2] + dt.timedelta(days=idx)
-                my_week = my_date.strftime("%U")
+                my_week = my_date.strftime("%W")
                 my_year = my_date.strftime("%Y")
                 my_month_no = my_date.strftime("%m")
                 my_month = my_date.strftime("%b")
@@ -57,6 +59,7 @@ for index, my_line in df.iterrows():
                           my_days]
                 my_lines.append(my_row)
 
+print(f"Generating output ...")
 df_out = pd.DataFrame(
     columns=['DOCNBR', 'NAME', 'DATE', 'DAY', 'WEEK', 'MONTHNUMBER', 'MONTH', 'YEAR', 'LINENBR', 'PROJECTID',
              'PROJECTNAME', 'PROJECT', 'TASKID', 'TASKNAME', 'COMMENT', 'HOURS', 'DAYS'], data=my_lines)
@@ -71,3 +74,4 @@ while os.path.exists(output_name):
     counter += 1
     output_name = f'output{counter}.xlsx'
 df_out.to_excel(output_name, index=False)
+print(f"Generated {output_name} - finished")
